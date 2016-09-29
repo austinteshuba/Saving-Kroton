@@ -1,0 +1,2329 @@
+package  
+{
+	
+	import flash.display.MovieClip;
+	import flash.events.*;
+	import flash.ui.Keyboard;
+	import flash.media.*;
+	import flash.display.MovieClip;
+	import flash.filters.BitmapFilterQuality; 
+	import flash.filters.BlurFilter;
+	import flash.utils.*;
+	import flash.security.X500DistinguishedName;
+	
+
+	public class MainSavingKroton extends MovieClip
+	{
+		//adding all buttons, integers, arrays, and booleans
+		var btnReeb:Reeb;
+		var btnNinja:Ninja;
+		var btnRex:Rex1;
+		var btnContinue:Continue;
+		var reeb:ReebObj;
+		var rex:RexObj;
+		var ninja:NinjaObj;
+		var snakeObj:Snake;
+		var vultureObj:Vulture;
+		var cactusObj:Cactus;
+		var tumbleweedObj:Tumbleweed;
+		var screenBackgroundObj:ScreenBackground;
+		var blackScreenObj:BlackScreen;
+		var randomNumberLevel1:int;
+		var level1ScreenBackgroundArray:Array;
+		var vx1:int;
+		var level1ObjectArray:Array;
+		var tumbleweedTrackerArray:Array;
+		var vultureTrackerArray:Array;
+		var sideNinjaLeft:NinjaSideViewLeft;
+		var sideReebLeft:ReebSideViewLeft;
+		var sideRexLeft:RexSideViewLeft;
+		var sideNinjaRight:NinjaSideViewRight;
+		var sideReebRight:ReebSideViewRight;
+		var sideRexRight:RexSideViewRight;
+		var ninjaJetpackLeft:NinjaJetpackLeft;
+		var ninjaJetpackRight:NinjaJetpackRight;
+		var reebJetpackLeft:ReebJetpackLeft;
+		var reebJetpackRight:ReebJetpackRight;
+		var rexJetpackLeft:RexJetpackLeft;
+		var rexJetpackRight:RexJetpackRight;
+		var selectionShadow:SelectionShadow;
+		var btnStart1:Start1;
+		var btnStart:Start;
+		var myLevel:Number; 
+		var selectionShadowAdded:Boolean;
+		var jumping:Boolean;
+		var pSelectArray:Array;
+		var cName:String;
+		var currentPSelect:int;//0 means Reeb, 1 means Ninja, 2 means Rex
+		var vy1:int;
+		var yPlaceHolder:Number;
+		var blur:BlurFilter;
+		var btnRestart:Restart;
+		var myTimer:Timer;
+		var crouching:Boolean;
+		var playerCar:Car;
+		var level2ObjectArray:Array;
+		var truck:Truck;
+		var bCar:BlueCar;
+		var rCar:RedCar;
+		var gCar:GreenCar;
+		var cyclist:Cyclist;
+		var roadBackground:RoadBackground;
+		var themeSong:Sound;
+		var themeSongSoundChannel:SoundChannel;
+		var vultureSound:Sound;
+		var vultureSoundSoundChannel:SoundChannel;
+		var deathSound:Sound;
+		var deathSoundSoundChannel:SoundChannel;
+		var carSound:Sound;
+		var carSoundSoundChannel:SoundChannel;
+		var vultureSoundPlaying:Boolean;
+		var deathSoundStarted,deathSoundComplete,transitionInitiate:Boolean;
+		var vultureSoundTracker:int;
+		var transitionInitiateTimer:Timer;
+		var level2RandomNumber1,level2RandomNumber2,level2RandomNumber3,level2RandomNumber4:int;
+		var level2Background:Level2Background;
+		var level2BackgroundArray:Array;
+		var streetDividers:StreetDividers;
+		var streetDividersArrayLeft, streetDividersArrayRight:Array;
+		var vy2,vy2_1:int;
+		var level2Player:LevelTwoPlayer;
+		var randomNumberLevel3:int;
+		var boulder:Boulder;
+		var bat:Bat;
+		var stormCloud:StormCloud;
+		var devil:Devil;
+		var randomX:int;
+		var level3ObjectArray:Array;
+		var vy3:int;
+		var vy3_1:int;
+		var vy4:int;
+		var vx4:int;
+		var level3BackgroundArray, boulderTrackerArray,movementArray, warningArray:Array;
+		var level3Background:Level3Background;
+		var street:Street;
+		var holdKey,trigger,move,youLose:Boolean;
+		var carSoundPlaying,added:Boolean;
+		var dial:Dial;
+		var lives, spacebar, turbine1Rotation, turbine2Rotation, turbine3Rotation, turbine4Rotation, turbine5Rotation, level4RandomNumber1, level4RandomNumber2, level4RandomNumber3, level4RandomNumber4, level4RandomNumber5:int;
+		var wrongSound:Sound;
+		var correctSound:Sound;
+		var closeSound:Sound;
+		var wrongSoundSoundChannel:SoundChannel;
+		var correctSoundSoundChannel:SoundChannel;
+		var closeSoundSoundChannel:SoundChannel;
+		var checkmark:Checkmark;
+		var wrongmark:X;
+		var lives1:Lives;
+		var livesArray,markArray:Array;
+		var youWin:Boolean;
+		var warning:Warning;
+
+		public function MainSavingKroton() //contructor function
+		{
+			myLevel=0; //current level will begin at 0
+			
+			level3BackgroundArray=new Array();
+			boulderTrackerArray=new Array();
+			movementArray=new Array();
+			youLose=false;
+			added=false;
+			
+			selectionShadowAdded=false;//this boolean will be counting the shadows at the character selection screen
+		
+			pSelectArray=new Array();//this array is for the character selected
+			
+			level1ObjectArray=new Array(); //array for the objects in level one
+			
+			level2ObjectArray=new Array();
+			
+			tumbleweedTrackerArray=new Array(); //tracks the tumbleweed in level 1 
+			
+			level1ScreenBackgroundArray=new Array(); 
+			
+			vultureTrackerArray=new Array(); //tracks the vultures in level 1
+			
+			level3ObjectArray=new Array();
+			
+			currentPSelect=3;//the current player selection will start at 0
+			
+			vultureSoundPlaying=false;
+			
+			vy1=0;
+			
+			vy2=13;
+			
+			vy2_1=9;
+			
+			vy3=10;
+			
+			vy3_1=8;
+			
+			vy4=0;
+			vx4=0;
+			
+			jumping=false;
+			
+			btnStart=new Start(); //the location of the first start button
+			btnStart.x=268;
+			btnStart.y=279;
+			addChild(btnStart);
+			
+			blur=new BlurFilter(); 
+			blur.blurX=7; 
+			blur.blurY=7; 
+			blur.quality=BitmapFilterQuality.MEDIUM;
+			
+			crouching=false;
+			
+			deathSoundStarted=false;
+			deathSoundComplete=false;
+			transitionInitiate=false;
+			carSoundPlaying=false;
+					
+			btnStart.addEventListener(MouseEvent.CLICK,launchPlayerSelect);//adding the start button function
+			stage.addEventListener(Event.ENTER_FRAME,gameLoop);//adding the game loop function
+			stage.addEventListener(KeyboardEvent.KEY_UP,keyUp); //adding the player jump function
+			stage.addEventListener(KeyboardEvent.KEY_DOWN,keyDown); //adding the player crouch function
+			
+			/*themeSong= new ThemeSong();
+			themeSongSoundChannel= new SoundChannel();
+			themeSongSoundChannel=themeSong.play();
+			themeSongSoundChannel.addEventListener(Event.SOUND_COMPLETE,restartThemeSong);*/
+			
+			vultureSound=new VultureSound();
+			vultureSoundSoundChannel=new SoundChannel();
+			
+			deathSound=new DeathSound();
+			deathSoundSoundChannel=new SoundChannel();
+			
+			carSound=new CarSound();
+			carSoundSoundChannel=new SoundChannel();
+			
+			wrongSound=new WrongClick();
+			wrongSoundSoundChannel=new SoundChannel();
+			
+			closeSound= new CloseClick();
+			closeSoundSoundChannel=new SoundChannel();
+			
+			correctSound=new CorrectClick();
+			correctSoundSoundChannel=new SoundChannel();
+			
+			
+			level2BackgroundArray=new Array();
+			
+			streetDividersArrayLeft=new Array();
+			
+			streetDividersArrayRight=new Array();
+			
+			holdKey=false;
+			
+			livesArray=new Array();
+			markArray=new Array();
+			warningArray=new Array();
+			
+		
+		}//end constructor 
+	public function gameLoop (e:Event):void
+		{
+			if (myLevel==1) //all the code in the gameloop for level one 
+			{
+				
+					if (vy1>-39)//if the player's velocity is greater than -39, subtract 3 from it's momentum until it reaches -39 (the opposite of where it started)
+					{
+						vy1-=3;	//subtract 3 from the player's momentum 
+					}//end if 
+					if (pSelectArray[2].y<=yPlaceHolder && jumping==true && deathSoundStarted==false) //if the player isn't lower than where it started & the player is jumping 
+					{
+						pSelectArray[2].y-=vy1;//apply velocity 
+						if (vy1==-39) //once the player reaches the point where it began
+						{
+							jumping=false;//the jumping boolean is now false & it's no longer jumping 
+						}//end if 
+					}//end if 
+
+            if (level1ObjectArray.length==0)//if the player wins level one 
+			{
+				stage.removeEventListener(KeyboardEvent.KEY_DOWN,keyDown);//remove the arrow key functions
+				stage.removeEventListener(KeyboardEvent.KEY_UP,keyUp);
+				pSelectArray[2].x-=vx1; //This all makes the player run double speed
+				if (pSelectArray[2]!=sideRexRight && pSelectArray[2].currentFrame>=11)
+				{
+					pSelectArray[2].gotoAndPlay(2);
+				}//end if 
+				else if (pSelectArray[2]==sideRexRight && pSelectArray[2].currentFrame>=9)
+				{
+					pSelectArray[2].gotoAndPlay(2);
+				}//end else if
+				else
+				{
+					pSelectArray[2].gotoAndPlay(pSelectArray[2].currentFrame+1);
+				}//end else
+				if (pSelectArray[2].x>=300)//if the player passes our virtual boundry initate the following transition 
+				{
+					if (blackScreenObj==null) //this all makes the black screen fade in 
+					{
+						blackScreenObj=new BlackScreen();
+						blackScreenObj.x=0;
+						blackScreenObj.y=0;
+						blackScreenObj.scaleX=3;
+						blackScreenObj.scaleY=3;
+						blackScreenObj.alpha=0;
+						addChild(blackScreenObj);
+					}//end if
+					blackScreenObj.alpha+=.02;
+					if (blackScreenObj.alpha>=1) //if it is fully opaque destroy the previous level
+					{
+						myLevel=1.1;
+						pSelectArray[2].gotoAndStop(1);
+						removeChild(pSelectArray[2]); //removes the player from screen
+						removeChild(blackScreenObj);//removes the black screen
+						for (var dd:int=0;dd<level1ScreenBackgroundArray.length;dd++) //for loop to take out the moving background
+						{
+							removeChild(level1ScreenBackgroundArray[dd]);
+							level1ScreenBackgroundArray[dd]=null;
+							level1ScreenBackgroundArray.splice(dd,1)
+							dd--;
+						}
+						gotoAndStop(7); //goes to the next frame on the stage
+						blackScreenObj=new BlackScreen();//adds black screen for fading out 
+						blackScreenObj.x=0;
+						blackScreenObj.y=0;
+						blackScreenObj.scaleX=3;
+						blackScreenObj.scaleY=3;
+						blackScreenObj.alpha=1;
+						addChild(blackScreenObj);
+						//all if the following adds the character back onto the screen
+						/*if (pSelectArray[2]==sideReebRight)
+						{
+							pSelectArray[2].x=73;
+							pSelectArray[2].y=275;
+							pSelectArray[2].scaleX=1;
+							pSelectArray[2].scaleY=1;
+						}//end if 
+						else if (pSelectArray[2]==sideNinjaRight)
+						{							
+							pSelectArray[2].x=75.4;
+							pSelectArray[2].y=297.5;
+							pSelectArray[2].height=180;
+							pSelectArray[2].width=110;
+						}//end else if 
+						else if (pSelectArray[2]==sideRexRight)
+						{
+							pSelectArray[2].x=92.75;
+							pSelectArray[2].y=303.2;
+							pSelectArray[2].height=186+(2/3);
+							pSelectArray[2].width=100;
+						}*///end else if 
+						pSelectArray2Placement();
+						addChildAt(pSelectArray[2],1);//ensures black screen on top
+						pSelectArray[2].gotoAndStop(1);//player goes to standing position
+						btnContinue=new Continue();//adds continue button
+						btnContinue.x=461.5;//location of continue button
+						btnContinue.y=46.8;
+						addChildAt(btnContinue,2);
+						btnContinue.addEventListener(MouseEvent.CLICK,instructionsContinue2);//adds function to the button
+					}//end if 
+				}//end if 
+			}//end if
+			for (var f:int=0;f<level1ObjectArray.length;f++)//cycles through level one object array to make it move
+				{
+					if (pSelectArray[2].currentFrame!=14) 
+					{
+						level1ObjectArray[f].x+=vx1;
+					}//end if
+					for (var b:int=0;b<tumbleweedTrackerArray.length;b++)
+					{
+						if (f==tumbleweedTrackerArray[b] && level1ObjectArray[tumbleweedTrackerArray[b]].x<=575)
+						{
+							level1ObjectArray[tumbleweedTrackerArray[b]].x+=vx1/4
+						}//end if 
+					}//end for 
+					for (var z:int=0;z<vultureTrackerArray.length;z++)
+					{
+						if (pSelectArray[2].currentFrame==14 && f==vultureTrackerArray[z] && level1ObjectArray[vultureTrackerArray[z]].x<=575)
+						{
+							level1ObjectArray[vultureTrackerArray[z]].x+=vx1;
+						}//end if 
+					}//end for 
+				}//end for 
+			for (var g:int=0;g<tumbleweedTrackerArray.length;g++)
+				{
+					if (level1ObjectArray[tumbleweedTrackerArray[g]]!=null && level1ObjectArray[tumbleweedTrackerArray[g]].x<=600 && vx1!=0)
+					{
+						level1ObjectArray[tumbleweedTrackerArray[g]].rotation+=-3;
+					}//end if 
+				}//end for
+				for (var gg:int=0;gg<vultureTrackerArray.length;gg++)
+				{
+					if (level1ObjectArray[vultureTrackerArray[gg]]!=null && level1ObjectArray[vultureTrackerArray[gg]].x<=400)
+					{
+						level1ObjectArray[vultureTrackerArray[gg]].x+=vx1/2
+						level1ObjectArray[vultureTrackerArray[gg]].y=-.001454714117*(Math.pow((level1ObjectArray[vultureTrackerArray[gg]].x-92),2))+213;
+						if (vultureSoundPlaying==false)
+						{
+							vultureSoundSoundChannel=vultureSound.play();
+							vultureSoundPlaying=true;
+						}
+					}//end if 
+				}//end for	
+				for (var c:int=0;c<level1ScreenBackgroundArray.length;c++)
+				{
+					if (pSelectArray[2].currentFrame!=14)
+					{
+						level1ScreenBackgroundArray[c].x+=vx1;
+					}//end if
+					if (level1ScreenBackgroundArray[c].x<=-300)
+					{
+						removeChild(level1ScreenBackgroundArray[c]);
+						level1ScreenBackgroundArray[c]=null;
+						level1ScreenBackgroundArray.splice(c,1);
+						c--;
+						screenBackgroundObj=new ScreenBackground();
+						screenBackgroundObj.x=level1ScreenBackgroundArray[level1ScreenBackgroundArray.length-1].x+550;
+						screenBackgroundObj.y=200;
+						screenBackgroundObj.alpha=level1ScreenBackgroundArray[level1ScreenBackgroundArray.length-1].alpha;
+						addChildAt(screenBackgroundObj,0);
+						level1ScreenBackgroundArray.push(screenBackgroundObj);
+					}//end if
+				}//end for 
+				for(var r:int=0;r<level1ObjectArray.length;r++)
+				{
+					if(level1ObjectArray[r]!=null && pSelectArray[2]!=null && level1ObjectArray[r].hitTestObject(pSelectArray[2]))
+					{
+						if(deathSoundStarted==false)
+						{
+							pSelectArray[2].gotoAndStop(pSelectArray[2].currentFrame);
+							if (vultureTrackerArray[0]==0)
+							{
+								level1ObjectArray[0].gotoAndStop(level1ObjectArray[0].currentFrame);
+							}//end if 
+							//themeSongSoundChannel.stop();
+							//themeSongSoundChannel.removeEventListener(Event.SOUND_COMPLETE,restartThemeSong);
+							deathSoundSoundChannel=deathSound.play();
+							deathSoundSoundChannel.addEventListener(Event.SOUND_COMPLETE,doneSound);
+							deathSoundStarted=true;
+							transitionInitiateTimer=new Timer(1000,1);
+							transitionInitiateTimer.addEventListener(TimerEvent.TIMER_COMPLETE, transitionInitiateFunction);
+							transitionInitiateTimer.start();
+							vx1=0;
+							vy1=0;
+							jumping=false;
+							if (level1ObjectArray[0]==vultureObj)
+							{
+								vultureObj.gotoAndStop(1);
+							}//end if 
+							stage.removeEventListener(KeyboardEvent.KEY_UP,keyUp);
+							stage.removeEventListener(KeyboardEvent.KEY_DOWN,keyDown);
+						}//end if 
+					}//end if 
+					if (deathSoundComplete==true)
+					{
+						pSelectArray[2].visible=false;
+						removeChild(level1ObjectArray[r]);
+						level1ObjectArray[r]=null;
+						level1ObjectArray.splice(r,1);
+						if(currentFrame==5)
+						{
+							for (var hhh:int=0;hhh<level1ObjectArray.length;hhh++)
+							{
+								removeChild(level1ObjectArray[hhh]);
+								level1ObjectArray[hhh]=null;
+								level1ObjectArray.splice(hhh,1);
+								hhh--;
+							}//end for 
+							for (var v:int=0;v<tumbleweedTrackerArray.length;v++)
+							{
+								tumbleweedTrackerArray[v]=null;
+								tumbleweedTrackerArray.splice(v,1);
+								v--;
+							}//end for 
+							for (var ff:int=0;ff<vultureTrackerArray.length;ff++)
+							{
+								vultureTrackerArray[ff]=null;
+								vultureTrackerArray.splice(ff,1);
+								ff--;
+							}//end for 
+							for (var xx:int=0;xx<level1ScreenBackgroundArray.length;xx++)
+							{
+								removeChild(level1ScreenBackgroundArray[xx]);
+								level1ScreenBackgroundArray[xx]=null;
+								level1ScreenBackgroundArray.splice(xx,1);
+								xx--;
+							}//end for 
+							myLevel=1.7;
+							gotoAndStop(6);
+							btnRestart=new Restart();
+							btnRestart.x=268;
+							btnRestart.y=330;
+							addChild(btnRestart);
+							btnRestart.addEventListener(MouseEvent.CLICK,restartLevel);
+							
+						}//end if 
+						
+						
+					}//end if 
+					
+				}//end for 
+				if (transitionInitiate==true)
+				{
+					pSelectArray[2].alpha-=.02;
+					for (var ggg:int=0;ggg<level1ObjectArray.length;ggg++)
+					{
+						level1ObjectArray[ggg].alpha-=.02;
+					}
+					for (var fff:int=0;fff<level1ScreenBackgroundArray.length;fff++)
+					{
+						level1ScreenBackgroundArray[fff].alpha-=.02;
+					}
+					if (pSelectArray[2].alpha<=0)
+					{
+						transitionInitiate=false;
+					}
+				}
+				//for (var aa:int=0;aa<level1ObjectArray.length;aa++)
+				//{
+					if (level1ObjectArray.length!=0 && level1ObjectArray[0].x<-100)
+						{
+							if (vultureTrackerArray[0]==0)
+							{
+								vultureSoundPlaying=false;
+								vultureSoundSoundChannel.stop();
+								vultureTrackerArray.splice(0,1);
+							}//end if 
+							else if (tumbleweedTrackerArray[0]==0)
+							{
+								tumbleweedTrackerArray.splice(0,1);
+							}//else if 
+							removeChild(level1ObjectArray[0]);
+							level1ObjectArray[0]=null;
+							level1ObjectArray.splice(0,1);
+							for (var u:int=0;u<vultureTrackerArray.length;u++)
+							{
+								vultureTrackerArray[u]-=1;
+							}//end for
+							for (var q:int=0;q<tumbleweedTrackerArray.length;q++)
+							{
+								tumbleweedTrackerArray[q]-=1;
+							}//end for 
+						}//end if 
+					//}//end for	
+			}//end if level one 
+			else if(myLevel==1.1)
+			{
+				if (blackScreenObj.alpha<=0)
+				{
+					myLevel=1.5;
+					removeChild(blackScreenObj);
+					pSelectArray[2].gotoAndStop(1);
+				}//end if 
+				blackScreenObj.alpha-=.01;
+				
+			}//end else if
+			else if(myLevel==2)
+			{
+				/*if(carSoundPlaying==false)
+				{
+					carSoundSoundChannel=carSound.play();
+					carSoundSoundChannel.addEventListener(Event.SOUND_COMPLETE,restartCarSound);
+				}*/
+				for(var p:int=0;p<level2BackgroundArray.length;p++)
+				{
+					if(currentFrame==9)
+					{
+						level2BackgroundArray[p].y+=vy2_1;
+					}//end if 
+					if(level2BackgroundArray[p]!=null && level2BackgroundArray[p].y>800)
+					{
+						removeChild(level2BackgroundArray[p]);
+						level2BackgroundArray[p]=null;	
+						level2BackgroundArray.splice(p,1);
+						p--;
+						level2Background=new Level2Background();
+						level2Background.x=0;
+						level2Background.y=level2BackgroundArray[level2BackgroundArray.length-1].y-400;
+						addChildAt(level2Background,0);
+						level2BackgroundArray.push(level2Background);
+					}//END  IF 
+				}//end for 
+				for (var l:int=0;l<streetDividersArrayLeft.length;l++)
+				{
+					streetDividersArrayLeft[l].y+=vy2_1;
+					streetDividersArrayRight[l].y+=vy2_1;
+					if(streetDividersArrayRight[l].y>550)
+					{
+						removeChild(streetDividersArrayRight[l]);
+						removeChild(streetDividersArrayLeft[l]);
+						streetDividersArrayRight[l]=null;
+						streetDividersArrayLeft[l]=null;
+						streetDividersArrayRight.splice(l,1);
+						streetDividersArrayLeft.splice(l,1);
+						l--;
+						streetDividers=new StreetDividers();
+						streetDividers.x=228.45;
+						streetDividers.y=streetDividersArrayLeft[streetDividersArrayLeft.length-1].y-81.45;
+						streetDividers.alpha=streetDividersArrayLeft[streetDividersArrayLeft.length-1].alpha;
+						addChild(streetDividers);
+						streetDividersArrayLeft.push(streetDividers);
+						
+						streetDividers=new StreetDividers();
+						streetDividers.x=316.45;
+						streetDividers.y=streetDividersArrayRight[streetDividersArrayRight.length-1].y-81.45;
+						streetDividers.alpha=streetDividersArrayRight[streetDividersArrayRight.length-1].alpha;
+						addChild(streetDividers);
+						streetDividersArrayRight.push(streetDividers);
+
+					}//end if 
+					//add code to replace when off screen here
+				}//end for
+				for(var ry:int=0;ry<level2ObjectArray.length;ry++) 
+				{
+					if(level2ObjectArray[ry]!=null && level2Player.hitTestObject(level2ObjectArray[ry]))
+					{
+						destroyLevel2();
+						gotoAndStop(6);
+						btnRestart=new Restart();
+						btnRestart.x=268;
+						btnRestart.y=330;
+						addChild(btnRestart);
+						btnRestart.addEventListener(MouseEvent.CLICK,restartLevel);
+						myLevel=2.5;
+					}//end if
+					if (level2ObjectArray[ry]!=null)
+					{
+						if(level2ObjectArray[ry].y<550)
+						{
+							level2ObjectArray[ry].scaleX=.8;
+							level2ObjectArray[ry].scaleY=.8;
+							level2ObjectArray[ry].y+=vy2;
+						}//end if 
+						else
+						{
+							removeChild(level2ObjectArray[ry]);
+							level2ObjectArray[ry]=null;
+							level2ObjectArray.splice(ry,1);
+							ry--;
+						}//end else 
+					}//end if
+				}//end for 
+				if (level2ObjectArray.length==0 && myLevel==2)
+				{
+					if (level2Player.alpha>=0)
+					{
+						level2Player.alpha-=.02;
+						level2Player.y-=5;
+						for (var nn:int=0;nn<streetDividersArrayLeft.length;nn++)
+						{
+							streetDividersArrayLeft[nn].alpha-=.02;
+							streetDividersArrayRight[nn].alpha-=.02;
+						}
+						for (var hnh:int=0;hnh<level2ObjectArray.length;hnh++)
+						{
+							level2ObjectArray[hnh].alpha-=.02;
+						}
+						for (var jj:int=0;jj<level2BackgroundArray.length;jj++)
+						{
+							level2BackgroundArray[jj].alpha-=.02;
+						}
+						street.alpha-=.02;
+					}
+					else
+					{
+						destroyLevel2();
+						gotoAndStop(10);
+						myLevel=2.7;
+						btnContinue=new Continue();
+						btnContinue.x=461.5;
+						btnContinue.y=46.8;
+						addChild(btnContinue);
+						pSelectArray2Placement();
+						addChild(pSelectArray[2]);
+						pSelectArray[2].visible=true;
+						blackScreenObj=new BlackScreen();//adds black screen for fading out 
+						blackScreenObj.x=0;
+						blackScreenObj.y=0;
+						blackScreenObj.scaleX=3;
+						blackScreenObj.scaleY=3;
+						blackScreenObj.alpha=1;
+						addChild(blackScreenObj);
+						//carSoundSoundChannel.stop();
+						//carSoundSoundChannel.removeEventListener(Event.SOUND_COMPLETE,restartCarSound);
+					}
+					
+				}//end if 
+			}//end else if level two
+			else if (myLevel==2.7)
+			{
+				if (blackScreenObj.alpha>=0)
+				{
+					blackScreenObj.alpha-=.02;
+				}
+				else
+				{
+					removeChild(blackScreenObj);
+					blackScreenObj=null;
+					btnContinue.addEventListener(MouseEvent.CLICK,instructionsContinue3);
+					myLevel=2.75;
+				}
+			}
+			else if(myLevel==3)
+			{
+				if (pSelectArray[3].x+vx4>15 && pSelectArray[4].x+vx4<300)
+				{
+					pSelectArray[3].x+=vx4;
+					pSelectArray[4].x+=vx4;
+				}//end if 
+				if (pSelectArray[3].y-vy4<=380)
+				{
+					pSelectArray[3].y-=vy4;
+					pSelectArray[4].y-=vy4;
+				}
+				
+				if (pSelectArray[3].y<=250)
+				{
+					pSelectArray[3].y+=vy4;
+					pSelectArray[4].y+=vy4;
+					if (vy4>0)
+					{
+						for (var jk:int=0;jk<level3BackgroundArray.length;jk++)
+						{
+							level3BackgroundArray[jk].y+=vy4;
+						}//end for 
+						
+						for (var hello:int=0;hello<level3ObjectArray.length;hello++)
+						{
+							level3ObjectArray[hello].y+=vy4;
+						}
+						for (var ned:int=0;ned<warningArray.length;ned++)
+						{
+							warningArray.y+=vy4;
+						}
+					}//end if 
+				}//end if 
+				for (var pan:int=0;pan<warningArray.length;pan++)
+				{
+					if (warningArray[pan].y>-50 && warningArray[pan].visible==false)
+					{
+						warningArray[pan].visible=true;
+					}
+					else if (warningArray[pan].y>=500)
+					{
+						removeChild(warningArray[pan]);
+						warningArray[pan]=null;
+						warningArray.splice(pan,1);
+						pan--;
+						if (pan==-1)
+						{
+							pan=14;
+						}
+					}
+				}
+				
+				if (vy4>-10 && holdKey==false && blackScreenObj==null)
+				{
+					vy4-=2;
+				}//end if 
+				for(var yo:int=0;yo<level3BackgroundArray.length;yo++)
+				{
+					if(level3BackgroundArray[yo]!=null && level3BackgroundArray[yo].y>800)
+					{
+						removeChild(level3BackgroundArray[yo]);
+						level3BackgroundArray[p]=null;	
+						level3BackgroundArray.splice(yo,1);
+						yo--;
+						level3Background=new Level3Background();
+						level3Background.x=0;
+						level3Background.y=level3BackgroundArray[level3BackgroundArray.length-1].y-400;
+						addChildAt(level3Background,0);
+						level3BackgroundArray.push(level3Background);
+					}//end if 
+				}//end for 
+				for(var rt:int=0;rt<level3ObjectArray.length;rt++)
+				{
+					for (var hi:int=0;hi<boulderTrackerArray.length;hi++)
+					{
+						if (boulderTrackerArray[hi]<0)
+						{
+							boulderTrackerArray.splice(hi,1);
+						}
+						if (boulderTrackerArray[hi]!=rt)
+						{
+							move=true;
+						}
+						else if (boulderTrackerArray[hi]==rt)
+						{
+							move=false;
+							hi=20000;
+						}
+					}
+					if (boulderTrackerArray.length==0)
+					{
+						move=true;
+					}
+					if (move==true)
+					{
+						if (movementArray[rt]==1)
+						{
+							level3ObjectArray[rt].x+=5;
+						}//end if
+						else if (movementArray[rt]==0)
+						{
+							level3ObjectArray[rt].x-=5;
+						}//end else if
+					}//end if
+					else if (move==false)
+					{
+						if (level3ObjectArray[rt].y>-50)
+						{
+							level3ObjectArray[rt].y+=8;
+							level3ObjectArray[rt].rotation+=5;
+						}
+					}
+					if (level3ObjectArray[rt].x>=320)
+					{
+						movementArray[rt]=0;
+					}
+					else if (level3ObjectArray[rt].x<=20)
+					{
+						movementArray[rt]=1;
+					}
+					if(level3ObjectArray[rt].hitTestObject(pSelectArray[4]) || level3ObjectArray[rt].hitTestObject(pSelectArray[3]))
+					{
+						youLose=true;
+						destroyLevel3();
+					}//end if 
+					if(level3ObjectArray.length!=0 && level3ObjectArray[rt].y>550)
+					{
+						removeChild(level3ObjectArray[rt]);
+						level3ObjectArray[rt]=null;
+						level3ObjectArray.splice(rt,1);
+						movementArray.splice(rt,1);
+						for (var gta:int=0;gta<boulderTrackerArray.length;gta++)
+						{
+							boulderTrackerArray[gta]=boulderTrackerArray[gta]-1;
+						}
+					}//end if
+				}//end for 
+				if (youLose==false && level3ObjectArray.length==0)
+				{
+					pSelectArray[3].y-=15;
+					pSelectArray[4].y-=15;
+					if (pSelectArray[3].y<150)
+					{
+						if (blackScreenObj==null)
+						{
+							blackScreenObj=new BlackScreen();
+							blackScreenObj.x=0;
+							blackScreenObj.y=0;
+							blackScreenObj.scaleX=3;
+							blackScreenObj.scaleY=3;
+							blackScreenObj.alpha=0;
+							addChild(blackScreenObj);
+							stage.removeEventListener(MouseEvent.CLICK,keyDown);
+							stage.removeEventListener(MouseEvent.CLICK,keyUp);
+							holdKey=false;
+							vy4=0;
+						}
+						else if (blackScreenObj!=null && blackScreenObj.alpha<1)
+						{
+							blackScreenObj.alpha+=.02;
+						}
+						else if (blackScreenObj!=null && blackScreenObj.alpha>=1)
+						{
+							removeChild(blackScreenObj);
+							blackScreenObj=null;
+							destroyLevel3();
+							pSelectArray2Placement();
+							addChild(pSelectArray[2]);
+							blackScreenObj=new BlackScreen();
+							blackScreenObj.x=0;
+							blackScreenObj.y=0;
+							blackScreenObj.scaleX=3;
+							blackScreenObj.scaleY=3;
+							addChild(blackScreenObj);
+						}
+					}
+				}
+			}//end else if level = 3 
+			else if (myLevel==3.7)
+			{
+				if (blackScreenObj.alpha>0)
+				{
+					blackScreenObj.alpha-=.02;
+				}//end if 
+				else
+				{
+					removeChild(blackScreenObj);
+					blackScreenObj=null;
+					btnContinue.addEventListener(MouseEvent.CLICK,instructionsContinue4);
+					myLevel=3.75;
+				}//end else
+			}//end else if 
+			else if (myLevel==4)
+			{
+				dial.rotation=dial.rotation%360;
+				//trace(dial.rotation);
+				if (markArray.length!=0)
+				{
+					for (var teep:int=0;teep<markArray.length;teep++)
+					{
+						markArray[teep].alpha-=.01;
+						if (markArray[teep].alpha<=0)
+						{
+							removeChild(markArray[teep]);
+							markArray[teep]=null;
+							markArray.splice(teep,1);
+							teep--;
+							if (teep==-1)
+							{
+								teep=45;
+							}//end if
+						}//end if
+					}//end for
+				}//end if
+				if (lives==0)
+				{
+					trace("insert you die code here");
+					youWin=false;
+					destroyLevel4();
+				}
+				if (spacebar==6)
+				{
+					if (blackScreenObj==null)
+					{
+						blackScreenObj=new BlackScreen();
+						blackScreenObj.x=0;
+						blackScreenObj.y=0;
+						blackScreenObj.scaleX=3;
+						blackScreenObj.scaleY=3;
+						blackScreenObj.alpha=0;
+						addChild(blackScreenObj);
+						stage.removeEventListener(MouseEvent.CLICK,keyDown);
+						stage.removeEventListener(MouseEvent.CLICK,keyUp);
+					}
+					else if (blackScreenObj!=null && blackScreenObj.alpha<1)
+					{
+						blackScreenObj.alpha+=.02;
+					}
+					else if (blackScreenObj!=null && blackScreenObj.alpha>=1)
+					{
+						removeChild(blackScreenObj);
+						blackScreenObj=null;
+						youWin=true;
+						destroyLevel4();
+					}
+				}
+				if (spacebar==1)
+				{
+					if (dial.rotation==turbine1Rotation)
+					{
+						trace("now");
+					}
+				}
+				else if (spacebar==2)
+				{
+					if (dial.rotation==turbine2Rotation)
+					{
+						trace("now");
+					}
+				}
+				else if (spacebar==3)
+				{
+					if (dial.rotation==turbine3Rotation)
+					{
+						trace("now");
+					}
+				}
+				else if (spacebar==4)
+				{
+					if (dial.rotation==turbine4Rotation)
+					{
+						trace("now");
+					}
+				}
+				else if (spacebar==5)
+				{
+					if (dial.rotation==turbine5Rotation)
+					{
+						trace("now");
+					}
+				}
+			}
+		}//end gameLoop	
+	public function restartLevel (e:MouseEvent):void
+		{
+			if(myLevel==1.7)
+			{
+				
+				gotoAndStop(5);
+				if(currentFrame==5)
+				{
+					pSelectArray[2].visible=true;
+					pSelectArray[2].alpha=1;
+					pSelectArray[2].gotoAndPlay(2);
+					pSelectArray[2].y=yPlaceHolder;
+					vy1=0;
+					btnRestart.removeEventListener(MouseEvent.CLICK,restartLevel);
+					removeChild(btnRestart);
+					btnRestart=null;
+				}
+				myLevel=1;
+				level1Start();
+				deathSoundStarted=false;
+				deathSoundComplete=false;
+				jumping=false;
+				stage.addEventListener(KeyboardEvent.KEY_UP,keyUp);
+				stage.addEventListener(KeyboardEvent.KEY_DOWN,keyDown);
+				//themeSongSoundChannel=themeSong.play();
+				//themeSongSoundChannel.addEventListener(Event.SOUND_COMPLETE,restartThemeSong);
+			}
+			else if(myLevel==2.5)
+			{
+				gotoAndStop(9);
+				removeChild(btnRestart);
+				btnRestart.removeEventListener(MouseEvent.CLICK,restartLevel);
+				btnRestart=null;
+				startLevel2();
+			}//end else if 
+
+			else if(myLevel==3.5)
+			{
+				removeChild(btnRestart);
+				btnRestart.removeEventListener(MouseEvent.CLICK,restartLevel);
+				btnRestart=null;
+				gotoAndStop(12);
+				startLevel3();
+			}//end else if 
+			else if(myLevel==4.5)
+			{
+				removeChild(btnRestart);
+				btnRestart.removeEventListener(MouseEvent.CLICK, restartLevel);
+				btnRestart=null;
+				gotoAndStop(15);
+				startLevel4();
+				myLevel=4;
+			}
+		}
+	public function selectReeb (e:MouseEvent) //if the character Reeb has been selected
+		{
+			currentPSelect=0; //the current selected player integer is 0 
+			
+			if (selectionShadowAdded==false)//if the character selection shadow is not visible
+			{
+				selectionShadow=new SelectionShadow(); //add the shadow to the stage under the selected character 
+				selectionShadow.x=420;
+				selectionShadow.y=207;
+				selectionShadow.filters = [blur];
+				addChild(selectionShadow);
+				selectionShadowAdded=true;//the shadow is now visible and can't appear twice 
+			}//end if 
+			else 
+			{
+				selectionShadow.x=420;
+			}//end else
+		}//end selectReeb
+		public function selectNinja (e:MouseEvent)//if the character Ninja has been selected
+		{
+			currentPSelect=1; //the current selected player integer is 1
+			if (selectionShadowAdded==false) //if the shadow is not visible
+			{
+				selectionShadow=new SelectionShadow(); //add the shadow to the stage under the selected character
+				selectionShadow.x=276;
+				selectionShadow.y=207;
+				selectionShadow.filters = [blur];
+				addChild(selectionShadow);
+				selectionShadowAdded=true;//the shadow is now visible and can't appear twice 
+			}//end if 
+			else
+			{
+				selectionShadow.x=276;
+			}//end else
+		}//end selectReeb
+		public function selectRex (e:MouseEvent)// if the character Rex has been selected
+		{
+			currentPSelect=2; //the churrent selected player integer is 2
+			if (selectionShadowAdded==false) //if the shadow is not visible
+			{
+				selectionShadow=new SelectionShadow(); //add the shadow to the stage under the selected character
+				selectionShadow.x=137.5;
+				selectionShadow.y=207;
+				selectionShadow.filters = [blur];
+				addChild(selectionShadow);
+				selectionShadowAdded=true; //the shadow is now visible and can't appear twice
+			}//end if
+			else
+			{
+				selectionShadow.x=137.5;
+			}//end else
+		}//end selectReeb
+	public function confirmSelection (e:MouseEvent) //once the character selection has been confirmed
+		{
+			if (currentPSelect!=3)
+			{
+				btnReeb.removeEventListener(MouseEvent.CLICK,selectReeb); //remove the buttons to select characters
+				btnNinja.removeEventListener(MouseEvent.CLICK,selectNinja);
+				btnRex.removeEventListener(MouseEvent.CLICK,selectRex);
+				
+				removeChild(btnReeb); //remove the character buttons
+				btnReeb=null;
+				
+				removeChild(btnNinja);
+				btnNinja=null;
+				
+				removeChild(btnRex);
+				btnRex=null;
+				
+				removeChild(btnStart1); 
+				
+				if (selectionShadow!=null)
+				{
+					removeChild(selectionShadow); //if the shadow is not null, remove that as well
+				}//end if
+				
+				btnStart1.removeEventListener(MouseEvent.CLICK,confirmSelection); //once the character is selected and confirmed, remove the confirm selection button 
+				btnStart1=null;
+				
+				gotoAndStop(3);
+				
+				if (currentPSelect==0)
+				{
+					reeb=new ReebObj();
+					pSelectArray.push(reeb);
+					
+					sideReebLeft=new ReebSideViewLeft();
+					pSelectArray.push(sideReebLeft);
+					
+					sideReebRight=new ReebSideViewRight();
+					pSelectArray.push(sideReebRight);
+					
+					reebJetpackLeft=new ReebJetpackLeft();
+					pSelectArray.push(reebJetpackLeft);
+					
+					reebJetpackRight=new ReebJetpackRight();
+					pSelectArray.push(reebJetpackRight);
+					
+					/*pSelectArray[2].x=73;
+					pSelectArray[2].y=264;
+					addChild(pSelectArray[2]);*/
+				}//end if 
+				else if (currentPSelect==1)
+				{
+					ninja=new NinjaObj();
+					pSelectArray.push(ninja);
+					
+					sideNinjaLeft=new NinjaSideViewLeft();
+					pSelectArray.push(sideNinjaLeft);
+					
+					sideNinjaRight=new NinjaSideViewRight();
+					pSelectArray.push(sideNinjaRight);
+					
+					ninjaJetpackLeft=new NinjaJetpackLeft();
+					pSelectArray.push(ninjaJetpackLeft);
+					
+					ninjaJetpackRight=new NinjaJetpackRight();
+					pSelectArray.push(ninjaJetpackRight);
+					
+					/*pSelectArray[2].x=75.4;
+					pSelectArray[2].y=297.5;
+					pSelectArray[2].height=180;
+					pSelectArray[2].width=110;
+					addChild(pSelectArray[2]);*/
+				}//end else if 
+				else if (currentPSelect==2)
+				{
+					rex=new RexObj();
+					pSelectArray.push(rex);
+					
+					sideRexLeft=new RexSideViewLeft();
+					pSelectArray.push(sideRexLeft);
+					
+					sideRexRight=new RexSideViewRight();
+					pSelectArray.push(sideRexRight);
+					
+					rexJetpackLeft=new RexJetpackLeft();
+					pSelectArray.push(rexJetpackLeft);
+					
+					rexJetpackRight=new RexJetpackRight();
+					pSelectArray.push(rexJetpackRight);
+					
+					/*pSelectArray[2].x=92.75;
+					pSelectArray[2].y=303.2;
+					pSelectArray[2].height=186+(2/3);
+					pSelectArray[2].width=100;
+					addChild(pSelectArray[2]);*/
+				}//end else if 
+				pSelectArray2Placement();
+				addChild(pSelectArray[2]);
+				btnContinue=new Continue();
+				btnContinue.x=461.5;
+				btnContinue.y=46.8;
+				addChild(btnContinue);
+				
+				btnContinue.addEventListener(MouseEvent.CLICK,instructionsContinue);
+							
+			}
+		}//end confirm selection
+		
+		public function pSelectArray2Placement():void
+		{
+			if (pSelectArray[2]==sideReebRight)
+			{
+				pSelectArray[2].x=73;
+				pSelectArray[2].y=275;
+				pSelectArray[2].scaleX=1;
+				pSelectArray[2].scaleY=1;
+			}//end if 
+			else if (pSelectArray[2]==sideNinjaRight)
+			{							
+				pSelectArray[2].x=75.4;
+				pSelectArray[2].y=297.5;
+				pSelectArray[2].height=180;
+				pSelectArray[2].width=110;
+			}//end else if 
+			else if (pSelectArray[2]==sideRexRight)
+			{
+				pSelectArray[2].x=92.75;
+				pSelectArray[2].y=303.2;
+				pSelectArray[2].height=186+(2/3);
+				pSelectArray[2].width=100;
+			}//end else if 
+		}//end public function pselectArray2placement 
+		
+		public function launchPlayerSelect(e:MouseEvent)
+		{
+			gotoAndStop(2);
+			removeChild(btnStart);
+			btnStart.removeEventListener(MouseEvent.CLICK,launchPlayerSelect);
+			btnStart=null;
+			
+					//add & position all the characters for selection on the stage
+					btnReeb=new Reeb();
+					btnReeb.x=344.5;
+					btnReeb.y=70.05;
+					addChild(btnReeb);
+					
+					btnNinja=new Ninja();
+					btnNinja.x=215.3;
+					btnNinja.y=84.05;
+					addChild(btnNinja);
+					
+					btnRex=new Rex1();
+					btnRex.x=79.5;
+					btnRex.y=84.05;
+					addChild(btnRex);
+					
+					btnStart1=new Start1(); //add & position the second start button on the stage
+					btnStart1.x=128;
+					btnStart1.y=344;
+					addChild(btnStart1);
+					
+					btnReeb.addEventListener(MouseEvent.CLICK,selectReeb); //add functions to each of the buttons (the characters)
+					btnNinja.addEventListener(MouseEvent.CLICK,selectNinja);
+					btnRex.addEventListener(MouseEvent.CLICK,selectRex); 
+					btnStart1.addEventListener(MouseEvent.CLICK,confirmSelection); //add a function to the second start button, meaning the player has selected a character
+					
+		}//end launchPlayerSelect
+		public function instructionsContinue(e:MouseEvent):void
+		{
+			if (currentFrame==3)
+			{
+				gotoAndStop(4);
+			}//end if 
+			else if (currentFrame==4)
+			{
+				gotoAndStop(5);
+				
+				removeChild(btnContinue);
+				btnContinue.removeEventListener(MouseEvent.CLICK,instructionsContinue);
+				if (pSelectArray[2]==sideReebRight)
+				{
+					pSelectArray[2].y+=30;
+					pSelectArray[2].scaleX=.70;
+				    pSelectArray[2].scaleY=.70;
+				}//end if 
+				else if (pSelectArray[2]==sideNinjaRight)
+				{
+					pSelectArray[2].y+=15;
+					pSelectArray[2].scaleX=.7;
+					pSelectArray[2].scaleY=.7;
+				}//end else if 
+				else if (pSelectArray[2]==sideRexRight)
+				{
+					pSelectArray[2].scaleX=.6;
+					pSelectArray[2].scaleY=.6;
+					pSelectArray[2].y+=20;
+				}//end else if 
+				pSelectArray[2].gotoAndPlay(2);
+				yPlaceHolder=pSelectArray[2].y;
+				
+				level1Start();
+			}//end else if 
+		}//end instructions continue 
+		public function instructionsContinue2(e:MouseEvent):void
+		{
+			if (currentFrame==7)
+			{
+				gotoAndStop(8);
+			}//end if 
+			else if (currentFrame==8)
+			{
+				gotoAndStop(9);
+				removeChild(pSelectArray[2]);
+				btnContinue.removeEventListener(MouseEvent.CLICK,instructionsContinue2);
+				removeChild(btnContinue);
+				startLevel2();
+			}//end else if 
+		}//end public function instructinos continue 2
+
+//end instructionsLevel2
+		public function instructionsContinue3(e:MouseEvent):void
+		{
+			if (currentFrame==10)
+			{
+				gotoAndStop(11);
+			}//end if
+			else if (currentFrame==11)
+			{
+				gotoAndStop(12);
+				btnContinue.removeEventListener(MouseEvent.CLICK,instructionsContinue3);
+				removeChild(btnContinue);
+				removeChild(pSelectArray[2]);
+				startLevel3();
+			}//end else if 
+		}//end public function instructions continue 3
+		public function instructionsContinue4(e:MouseEvent):void
+		{
+			if (currentFrame==13)
+			{
+				gotoAndStop(14);
+			}//end if 
+			else if (currentFrame==14)
+			{
+				gotoAndStop(15);
+				removeChild(pSelectArray[2]);
+				btnContinue.removeEventListener(MouseEvent.CLICK,instructionsContinue4);
+				removeChild(btnContinue);
+				startLevel4();
+			}//end else if 
+		}//end function instructions continue 4
+		public function instructionsContinue5(e:MouseEvent):void
+		{
+			if (currentFrame==16)
+			{
+				gotoAndStop(17);
+			}
+			else 
+			{
+				removeChild(pSelectArray[2]);
+				removeChild(btnContinue);
+				btnContinue.removeEventListener(MouseEvent.CLICK,instructionsContinue5);
+				btnContinue=null;
+			}
+		}
+		public function keyDown(e:KeyboardEvent):void
+		{
+			if (myLevel==1)
+			{
+				if (jumping==false)
+				{
+					if(e.keyCode==Keyboard.DOWN)
+					{
+						if (crouching==false)
+						{
+							pSelectArray[2].gotoAndStop(14);
+							myTimer=new Timer(3000,1);
+							myTimer.start();
+							
+							myTimer.addEventListener(TimerEvent.TIMER_COMPLETE,unCrouch);
+							crouching=true;
+						}//end if 
+					}//end if 
+				}//end if 
+				if(e.keyCode==Keyboard.UP)
+					{
+						if	(jumping==false)					
+						{
+							vy1=39;
+							pSelectArray[2].y-=vy1;
+							jumping=true;
+							//vy1-=3;
+							//pSelectArray[2].y-=vy1;
+						}//end if 
+					} //end if 
+			}//end if 
+			if(myLevel==2)
+			{
+				if(e.keyCode==Keyboard.LEFT)
+				{
+					if (level2Player.x>189)
+					{
+						level2Player.x-=88;
+					}//end if 
+				}//end if 
+				if(e.keyCode==Keyboard.RIGHT)
+				{
+					if (level2Player.x<365)
+					{
+						level2Player.x+=88;
+					}//end if 
+				}//end if 
+			}//end if my level=2
+			if(myLevel==3)
+			{
+				if (e.keyCode==Keyboard.UP)
+				{
+					vy4=10;
+					holdKey=true;
+				}//end if 
+				if (e.keyCode==Keyboard.LEFT)
+				{
+					if (pSelectArray[4].visible==true)
+					{
+						pSelectArray[4].visible=false;
+						pSelectArray[3].visible=true;
+					}//end if 
+					vx4=-5;
+				}//end if 
+				if (e.keyCode==Keyboard.RIGHT)
+				{
+					if (pSelectArray[3].visible==true)
+					{
+						pSelectArray[4].visible=true;
+						pSelectArray[3].visible=false;
+					}//end if 
+					vx4=5;
+				}//end if 
+			}//end if 
+			if(myLevel==4)
+			{
+				if(spacebar%2==1 && e.keyCode==Keyboard.RIGHT)
+				{
+					dial.rotation+=9;
+					if (spacebar==1)
+					{
+						if (dial.rotation==turbine1Rotation)
+						{
+							correctSoundSoundChannel=correctSound.play();
+						}
+						else if (dial.rotation+9==turbine1Rotation || dial.rotation-9==turbine1Rotation)
+						{
+							closeSoundSoundChannel=closeSound.play();
+						}
+						else
+						{
+							wrongSoundSoundChannel=wrongSound.play();
+						}
+					}
+					else if (spacebar==3)
+					{
+						if (dial.rotation==turbine3Rotation)
+						{
+							correctSoundSoundChannel=correctSound.play();
+						}
+						else if (dial.rotation+9==turbine3Rotation || dial.rotation-9==turbine3Rotation)
+						{
+							closeSoundSoundChannel=closeSound.play();
+						}
+						else
+						{
+							wrongSoundSoundChannel=wrongSound.play();
+						}
+					}
+					else if (spacebar==5)
+					{
+						if (dial.rotation==turbine5Rotation)
+						{
+							correctSoundSoundChannel=correctSound.play();
+						}
+						else if (dial.rotation+9==turbine5Rotation || dial.rotation-9==turbine5Rotation)
+						{
+							closeSoundSoundChannel=closeSound.play();
+						}
+						else
+						{
+							wrongSoundSoundChannel=wrongSound.play();
+						}
+					}
+					
+				}//end if 
+				else if(spacebar%2==0 && e.keyCode==Keyboard.LEFT)
+				{
+					dial.rotation+=-9;
+					if (spacebar==2)
+					{
+						if (dial.rotation==turbine2Rotation)
+						{
+							correctSoundSoundChannel=correctSound.play();
+						}
+						else if (dial.rotation+9==turbine2Rotation || dial.rotation-9==turbine2Rotation)
+						{
+							closeSoundSoundChannel=closeSound.play();
+						}
+						else
+						{
+							wrongSoundSoundChannel=wrongSound.play();
+						}
+					}
+					else if (spacebar==4)
+					{
+						if (dial.rotation==turbine4Rotation)
+						{
+							correctSoundSoundChannel=correctSound.play();
+						}
+						else if (dial.rotation+9==turbine4Rotation || dial.rotation-9==turbine4Rotation)
+						{
+							closeSoundSoundChannel=closeSound.play();
+						}
+						else
+						{
+							wrongSoundSoundChannel=wrongSound.play();
+						}
+					}
+				}//end else if 
+				else if(e.keyCode==Keyboard.SPACE)
+				{
+					if(spacebar==1)
+					{
+						if (dial.rotation==turbine1Rotation)
+						{
+							spacebar++;
+							trace("Yes!");
+							checkmark=new Checkmark();
+							checkmark.x=275;
+							checkmark.y=200;
+							addChild(checkmark);
+							markArray.push(checkmark);
+						}
+						else
+						{
+							lives--;
+							trace("no");
+							wrongmark=new X();
+							wrongmark.x=275;
+							wrongmark.y=200;
+							addChild(wrongmark);
+							markArray.push(wrongmark);
+							removeChild(livesArray[lives]);
+							livesArray[lives]=null;
+							livesArray.splice(lives);
+						}
+					}
+					else if (spacebar==2)
+					{
+						if (dial.rotation==turbine2Rotation)
+						{
+							spacebar++;
+							trace("Yes!");
+							checkmark=new Checkmark();
+							checkmark.x=275;
+							checkmark.y=200;
+							addChild(checkmark);
+							markArray.push(checkmark);
+						}
+						else
+						{
+							lives--;
+							trace("no");
+							wrongmark=new X();
+							wrongmark.x=275;
+							wrongmark.y=200;
+							addChild(wrongmark);
+							markArray.push(wrongmark);
+							removeChild(livesArray[lives]);
+							livesArray[lives]=null;
+							livesArray.splice(lives);
+						}
+					}
+					else if (spacebar==3)
+					{
+						if (dial.rotation==turbine3Rotation)
+						{
+							spacebar++;
+							trace("Yes!");
+							checkmark=new Checkmark();
+							checkmark.x=275;
+							checkmark.y=200;
+							addChild(checkmark);
+							markArray.push(checkmark);
+						}
+						else
+						{
+							lives--;
+							trace("no");
+							wrongmark=new X();
+							wrongmark.x=275;
+							wrongmark.y=200;
+							addChild(wrongmark);
+							markArray.push(wrongmark);
+							removeChild(livesArray[lives]);
+							livesArray[lives]=null;
+							livesArray.splice(lives);
+						}
+					}
+					else if (spacebar==4)
+					{
+						if (dial.rotation==turbine4Rotation)
+						{
+							spacebar++;
+							trace("Yes!");
+							checkmark=new Checkmark();
+							checkmark.x=275;
+							checkmark.y=200;
+							addChild(checkmark);
+							markArray.push(checkmark);
+						}
+						else
+						{
+							lives--;
+							trace("no");
+							wrongmark=new X();
+							wrongmark.x=275;
+							wrongmark.y=200;
+							addChild(wrongmark);
+							markArray.push(wrongmark);
+							removeChild(livesArray[lives]);
+							livesArray[lives]=null;
+							livesArray.splice(lives);
+						}
+					}
+					else
+					{
+						if (dial.rotation==turbine5Rotation)
+						{
+							spacebar++;
+							trace("Yes!");
+							checkmark=new Checkmark();
+							checkmark.x=275;
+							checkmark.y=200;
+							addChild(checkmark);
+							markArray.push(checkmark);
+						}
+						else
+						{
+							lives--;
+							trace("no");
+							wrongmark=new X();
+							wrongmark.x=275;
+							wrongmark.y=200;
+							addChild(wrongmark);
+							markArray.push(wrongmark);
+							removeChild(livesArray[lives]);
+							livesArray[lives]=null;
+							livesArray.splice(lives);
+						}
+					}
+				}
+			}//end if
+		}//end KeyDown
+		public function keyUp(e:KeyboardEvent):void
+		{
+			if(myLevel==1)
+			{
+				if(e.keyCode==Keyboard.DOWN)
+				{
+					if (pSelectArray[2].currentFrame==14)
+					{
+						pSelectArray[2].gotoAndPlay(2);
+						myTimer.stop();
+						myTimer.removeEventListener(TimerEvent.TIMER_COMPLETE,unCrouch);
+					}//end if 
+					crouching=false;
+				}//end if 
+				
+			}//end if mylevelone
+			if (myLevel==3)
+			{
+				if (e.keyCode==Keyboard.UP)
+				{
+					holdKey=false;
+				}//end if 
+				if (e.keyCode==Keyboard.RIGHT || e.keyCode==Keyboard.LEFT)
+				{
+					vx4=0;
+				}//end if 
+				
+			}//end if 
+		}//end Key Up
+		public function level1Start():void
+		{
+			myLevel=1;
+			for (var t:int=0;t<2;t++)
+			{
+				randomNumberLevel1=Math.ceil(Math.random()*4);
+				vx1=-10;
+				if (randomNumberLevel1==1)
+				{
+					cactusObj=new Cactus();
+					if (t==0)
+					{
+						cactusObj.x=850;
+					}//end if 
+					else 
+					{
+						cactusObj.x=level1ObjectArray[level1ObjectArray.length-1].x+Math.ceil(Math.random()*150)+250;
+					}//end else
+					cactusObj.y=340;//test this, may be too high, may be too low.
+					cactusObj.scaleY=1.3;
+					addChild(cactusObj);
+					level1ObjectArray.push(cactusObj);
+					//add cactus
+				}//end if 
+				else if (randomNumberLevel1==2)
+				{
+					tumbleweedObj=new Tumbleweed();
+					if (t==0)
+					{
+						tumbleweedObj.x=850;
+					}//end if 
+					else 
+					{
+						tumbleweedObj.x=level1ObjectArray[level1ObjectArray.length-1].x+Math.ceil(Math.random()*150)+300;
+					}//end else
+					tumbleweedObj.y=350;
+					addChild(tumbleweedObj);
+					level1ObjectArray.push(tumbleweedObj);
+					tumbleweedTrackerArray.push(t);//will be used for rotation
+					//add tumbleweed
+				}//end else if 
+				else if (randomNumberLevel1==3)
+				{
+					vultureObj=new Vulture();
+					if (t==0)
+					{
+						vultureObj.x=850;
+					}//end if 
+					else 
+					{
+						if (level1ObjectArray[t-1]!=vultureObj)
+						{
+							vultureObj.x=level1ObjectArray[t-1].x+Math.ceil(Math.random()*150)+400;
+						}//end if 
+						else if (level1ObjectArray[t-1]==vultureObj)
+						{
+							vultureObj.x=level1ObjectArray[t-1].x+Math.ceil(Math.random()*150)+250;
+						}//end else if 
+					}//end else
+					vultureObj.y=75;//test and play with it.
+					vultureObj.scaleX=.5;
+					vultureObj.scaleY=.5;
+					addChild(vultureObj);
+					level1ObjectArray.push(vultureObj);
+					vultureTrackerArray.push(t);
+					//add vulture
+				}//end else if 
+				else
+				{
+					snakeObj=new Snake();
+					if (t==0)
+					{
+						snakeObj.x=850;
+					}//end if 
+					else 
+					{
+						snakeObj.x=level1ObjectArray[level1ObjectArray.length-1].x+Math.ceil(Math.random()*150)+200;
+					}//end else 
+					snakeObj.y=350;
+					addChild(snakeObj);
+					level1ObjectArray.push(snakeObj);
+					//add snake
+				}//end else
+				
+			}//end else 
+			vultureSoundTracker=vultureTrackerArray[0];
+			for (var a:int=0;a<4;a++)
+			{
+				screenBackgroundObj=new ScreenBackground();
+				screenBackgroundObj.x=280+550*a;
+				screenBackgroundObj.y=200;
+				addChildAt(screenBackgroundObj,0);
+				level1ScreenBackgroundArray.push(screenBackgroundObj);
+			}//end for 
+		}//end level1Start
+		public function unCrouch(e:TimerEvent):void
+		{
+			pSelectArray[2].gotoAndPlay(2);
+			myTimer.stop();
+		}//end public function uncrouch 
+		public function doneSound(e:Event):void
+		{
+			deathSoundComplete=true;
+		}//end public function done sound
+		public function transitionInitiateFunction(e:TimerEvent):void
+		{
+			transitionInitiate=true;
+		}//end public function transition initiate function 
+		/*public function restartThemeSong(e:Event):void
+		{
+			themeSongSoundChannel=themeSong.play();
+		}*/
+		/*public function restartCarSound(e:Event):void
+		{
+			carSoundSoundChannel=carSound.play();
+		}*/
+		public function startLevel2():void
+		{
+				//carSoundSoundChannel=carSound.play();
+				//carSoundSoundChannel.addEventListener(Event.SOUND_COMPLETE,restartCarSound);
+				stage.addEventListener(KeyboardEvent.KEY_UP,keyUp);
+				stage.addEventListener(KeyboardEvent.KEY_DOWN,keyDown); 
+				level2Player=new LevelTwoPlayer();
+				level2Player.x=277;
+				level2Player.y=285;
+				addChild(level2Player);
+			
+				street=new Street();
+				street.x=147.95;
+				street.y=0;
+				addChildAt(street,0);
+			
+				for (var nn:int=0;nn<14;nn++)
+				{
+					streetDividers=new StreetDividers();
+					streetDividers.x=228.45;
+					streetDividers.y=308.45-81.45*nn;
+					addChild(streetDividers);
+					streetDividersArrayLeft.push(streetDividers);
+				}//end for 
+				for (var nnn:int=0;nnn<14;nnn++)
+				{
+					streetDividers=new StreetDividers();
+					streetDividers.x=316.45;
+					streetDividers.y=308.45-81.45*nnn;
+					addChild(streetDividers);
+					streetDividersArrayRight.push(streetDividers);
+				}//end for 
+				for (var n:int=0;n<6;n++)
+				{
+					level2Background=new Level2Background;
+					level2Background.x=0;
+					level2Background.y=800-400*n;
+					addChildAt(level2Background,0);
+					level2BackgroundArray.push(level2Background);
+				}//end for 
+				for (var b:int=0;b<5;b++)
+				{
+					level2RandomNumber1=Math.ceil(Math.random()*5);//determines type of object at start 1 is truck, 2 is blue car, 3 is red car, 4 is green car, 5 is bike
+					level2RandomNumber2=Math.ceil(Math.random()*6);//determines combonation of lanes. 1 is left, 2 is middle, 3 is right, 4 is left and right, 5 is middle and right, 6 is left and middle
+					level2RandomNumber3=Math.ceil(Math.random()*4);//for other objects to see which object (exclude cyclist) will be next to that car/ truck. thing. 1 is truck, 2 is blue car, 3 is red car, 4 is green car. 
+					if (level2RandomNumber1==1)
+					{
+						truck=new Truck();
+						if (level2RandomNumber2==1 || level2RandomNumber2==4 || level2RandomNumber2==6)
+						{
+							truck.x=189.25;//play with these numbers, they are simply to test.
+						}//end if 
+						else if (level2RandomNumber2==2 || level2RandomNumber2==5)
+						{
+							truck.x=277.25;
+						}//end else if 
+						else if (level2RandomNumber2==3 )
+						{
+							truck.x=365.25;
+						}//end else if 
+						truck.y=-b*500;
+						addChild(truck);
+						level2ObjectArray.push(truck);
+					}//end if 
+					else if (level2RandomNumber1==2)
+					{
+						bCar=new BlueCar();
+						if (level2RandomNumber2==1 || level2RandomNumber2==4 || level2RandomNumber2==6)
+						{
+							bCar.x=189.25;//play with these numbers, they are simply to test.
+						}//end if 
+						else if (level2RandomNumber2==2 || level2RandomNumber2==5)
+						{
+							bCar.x=277.25;
+						}//end else if 
+						else if (level2RandomNumber2==3 )
+						{
+							bCar.x=365.25;
+						}//end else if 
+						bCar.y=-b*500;
+						addChild(bCar);
+						level2ObjectArray.push(bCar);
+					}//end else if 
+					else if (level2RandomNumber1==3)
+					{
+						rCar=new RedCar();
+						if (level2RandomNumber2==1 || level2RandomNumber2==4 || level2RandomNumber2==6)
+						{
+							rCar.x=189.25;//play with these numbers, they are simply to test.
+						}//end if 
+						else if (level2RandomNumber2==2 || level2RandomNumber2==5)
+						{
+							rCar.x=277.25;
+						}//end else if 
+						else if (level2RandomNumber2==3)
+						{
+							rCar.x=365.25;
+						}//end else if 
+						rCar.y=-b*500;
+						addChild(rCar);
+						level2ObjectArray.push(rCar);
+					}//end else if 
+					else if (level2RandomNumber1==4)
+					{
+						gCar=new GreenCar();
+						if (level2RandomNumber2==1 || level2RandomNumber2==4 || level2RandomNumber2==6)
+						{
+							gCar.x=189.25;//play with these numbers, they are simply to test.
+						}//end if 
+						else if (level2RandomNumber2==2 || level2RandomNumber2==5)
+						{
+							gCar.x=277.25;
+						}//end else if 
+						else if (level2RandomNumber2==3)
+						{
+							gCar.x=365.25;
+						}//end else if
+						gCar.y=-b*500;
+						addChild(gCar);
+						level2ObjectArray.push(gCar);
+					}//end else if 
+					else
+					{
+						cyclist=new Cyclist();
+						if (level2RandomNumber2==1 || level2RandomNumber2==4 || level2RandomNumber2==6)
+						{
+							cyclist.x=189.25;//play with these numbers, they are simply to test.
+						}//end if 
+						else if (level2RandomNumber2==2 || level2RandomNumber2==5)
+						{
+							cyclist.x=277.25;
+						}//end else if 
+						else if (level2RandomNumber2==3)
+						{
+							cyclist.x=365.25;
+						}//end else if 
+						cyclist.y=-b*500;
+						addChild(cyclist);
+						level2ObjectArray.push(cyclist);
+						if (level2RandomNumber2>3)
+						{
+							level2RandomNumber4=Math.ceil(Math.random()*2);//for cyclist to determine if cyclist will appear next to him
+						}//end if 
+					}//end else 
+					if (level2RandomNumber1!=5)
+					{
+						if (level2RandomNumber2>3)
+						{
+							if (level2RandomNumber3==1)
+							{
+								truck=new Truck();
+								if (level2RandomNumber2<6)
+								{
+									truck.x=365.25;
+								}//end if 
+								else
+								{
+									truck.x=277.25;
+								}//end else
+								truck.y=-b*500;
+								addChild(truck);
+								level2ObjectArray.push(truck);
+							} //end if 
+							else if (level2RandomNumber3==2)
+							{
+								bCar=new BlueCar();
+								if (level2RandomNumber2<6)
+								{
+									bCar.x=365.25;
+								}//end if 
+								else
+								{
+									bCar.x=277.25;
+								}//end else
+								bCar.y=-b*500;
+								addChild(bCar);
+								level2ObjectArray.push(bCar);
+							}//end else if 
+							else if (level2RandomNumber3==3)
+							{
+								rCar=new RedCar();
+								if (level2RandomNumber2<6)
+								{
+									rCar.x=365.25;
+								}//end if 
+								else
+								{
+									rCar.x=277.25;
+								}//end else
+								rCar.y=-b*500;
+								addChild(rCar);
+								level2ObjectArray.push(rCar);
+							}//end else if 
+							else
+							{
+								gCar=new GreenCar();
+								if (level2RandomNumber2<6)
+								{
+									gCar.x=365.25;
+								}//end if 
+								else
+								{
+									gCar.x=277.25;
+								}//end else
+								gCar.y=-b*500;
+								addChild(gCar);
+								level2ObjectArray.push(gCar);
+							}//end else
+						}//end if 
+					}//end if 
+					else 
+					{
+						if (level2RandomNumber2>3 && level2RandomNumber4==2)
+						{ 
+							cyclist=new Cyclist();
+							if (level2RandomNumber2<6)
+							{
+								cyclist.x=365.25;
+							}//end if 
+							else
+							{
+								cyclist.x=277.25;
+							}//end else
+							cyclist.y=-b*500;
+							addChild(cyclist);
+							level2ObjectArray.push(cyclist);
+						}//end if 
+					}//end else 
+				}//end for 
+				myLevel=2;
+				//stage.addEventListener(Event.ENTER_FRAME,startLevel2);
+		}//end startLevelTwo
+		public function startLevel3():void
+		{
+			if (youLose==true)
+			{
+				vy4=-2;
+				youLose=false;
+			}//end if 
+			else
+			{
+				vy4=0;
+			}//end else
+			move=true;
+			stage.addEventListener(KeyboardEvent.KEY_UP,keyUp);
+			stage.addEventListener(KeyboardEvent.KEY_DOWN,keyDown); 
+			vy3=10;
+			
+			vy3_1=8;
+
+			vx4=0;
+			
+			for (var oo:int=0;oo<6;oo++)
+			{
+				level3Background=new Level3Background;
+				level3Background.x=0;
+				level3Background.y=800-400*oo;
+				addChildAt(level3Background,0);
+				level3BackgroundArray.push(level3Background);
+			}//end for 
+			if (added==false)
+			{
+				pSelectArray[4].scaleX=.60;
+				pSelectArray[4].scaleY=.60;
+				pSelectArray[4].x=250;
+				pSelectArray[4].y=250;
+				pSelectArray[4].visible=true;
+				addChild(pSelectArray[4]);
+				pSelectArray[3].scaleX=.6;
+				pSelectArray[3].scaleY=.6;
+				pSelectArray[3].x=250;
+				pSelectArray[3].y=250;
+				addChild(pSelectArray[3]);
+				pSelectArray[3].visible=false;
+				added=true;
+			}//end if 
+			else if (added==true)
+			{
+				pSelectArray[4].visible=true;
+				pSelectArray[3].visible=false;
+			}//end else 
+			
+			for(var ok:int=0;ok<1;ok++)
+			{
+				randomNumberLevel3=Math.ceil(Math.random()*4);
+				randomX=Math.random()*150+100;
+				trace(randomX);
+				//vy3=-10;
+				if(randomNumberLevel3==1)
+				{
+					boulder=new  Boulder();
+					boulder.x=randomX;
+					if (level3ObjectArray.length==0)
+					{
+						boulder.y=-550;
+					}//end if 
+					else
+					{
+						boulder.y=level3ObjectArray[level3ObjectArray.length-1].y-750-Math.random()*150;
+					}//end else
+					addChild(boulder);
+					level3ObjectArray.push(boulder);
+					warning=new Warning();
+					warning.x=200;
+					warning.y=boulder.y+350;
+					addChild(warning);
+					warning.visible=false;
+					warningArray.push(warning);
+					boulderTrackerArray.push(ok);
+				}//end if 
+				else if(randomNumberLevel3==2)
+				{
+					bat=new Bat();
+					bat.x=randomX;
+					if (level3ObjectArray.length==0)
+					{
+						bat.y=-550;
+					}//end if 
+					else
+					{
+						bat.y=level3ObjectArray[level3ObjectArray.length-1].y-450-Math.random()*150;
+					}//end else 
+					addChild(bat);
+					level3ObjectArray.push(bat);
+				}//end else if 
+				else if (randomNumberLevel3==3)
+				{
+					stormCloud=new StormCloud();
+					stormCloud.x=randomX;
+					if (level3ObjectArray.length==0)
+					{
+						stormCloud.y=-550;
+					}//end if
+					else
+					{
+						stormCloud.y=level3ObjectArray[level3ObjectArray.length-1].y-450-Math.random()*150;
+					}//end else
+					addChild(stormCloud);
+					level3ObjectArray.push(stormCloud);
+				}//end else if
+				else if (randomNumberLevel3==4)
+				{
+					devil=new Devil();
+					devil.x=randomX;
+					if (level3ObjectArray.length==0)
+					{
+						devil.y=-550;
+					}//end if
+					else
+					{
+						devil.y=level3ObjectArray[level3ObjectArray.length-1].y-450-Math.random()*150;
+					}//end else
+					addChild(devil);
+					level3ObjectArray.push(devil);
+				}
+			}//end for 
+			for (var fgfg:int=0;fgfg<level3ObjectArray.length;fgfg++)
+			{
+				movementArray[fgfg]=1;
+			}//end for 
+			trace(movementArray);
+			trace(level3ObjectArray);
+			trace(boulderTrackerArray);
+			myLevel=3;
+		}//end start level 3 
+		public function startLevel4():void
+		{
+			stage.addEventListener(KeyboardEvent.KEY_UP,keyUp);
+			stage.addEventListener(KeyboardEvent.KEY_DOWN,keyDown); 
+			myLevel=4;
+			spacebar=1;
+			lives=3;
+			
+			dial=new Dial();
+			dial.x=275;
+			dial.y=200;
+			addChild(dial);
+			
+			for (var jupe:int=0;jupe<3;jupe++)
+			{
+				lives1=new Lives();
+				lives1.x=510-30*jupe
+				lives1.y=375;
+				addChild(lives1);
+				livesArray.push(lives1);
+			}
+			
+			level4RandomNumber1=Math.floor(Math.random()*39-.000001)+1;
+			level4RandomNumber2=Math.floor(Math.random()*39-.000001)+1;
+			level4RandomNumber3=Math.floor(Math.random()*39-.000001)+1;
+			level4RandomNumber4=Math.floor(Math.random()*39-.000001)+1;
+			level4RandomNumber5=Math.floor(Math.random()*39-.000001)+1;
+			
+			turbine1Rotation=(level4RandomNumber1*9);
+			turbine2Rotation=turbine1Rotation-((level4RandomNumber2*9)%360);
+			turbine3Rotation=turbine2Rotation+((level4RandomNumber3*9)%360);
+			turbine4Rotation=turbine3Rotation-((level4RandomNumber4*9)%360);
+			turbine5Rotation=turbine4Rotation+((level4RandomNumber5*9)%360);
+			if (turbine1Rotation>180)
+			{
+				turbine1Rotation-=360
+			}
+			if (turbine2Rotation>180)
+			{
+				turbine1Rotation-=360;
+			}
+			else if (turbine2Rotation<=-180)
+			{
+				turbine2Rotation+=360;
+			}
+			if (turbine3Rotation>180)
+			{
+				turbine3Rotation-=360;
+			}
+			else if (turbine3Rotation<=-180)
+			{
+				turbine3Rotation+=360;
+			}
+			if (turbine4Rotation>180)
+			{
+				turbine4Rotation-=360;
+			}
+			else if (turbine4Rotation<=-180)
+			{
+				turbine4Rotation+=360;
+			}
+			if (turbine5Rotation>180)
+			{
+				turbine5Rotation-=360;
+			}
+			else if (turbine5Rotation<=-180)
+			{
+				turbine5Rotation+=360;
+			}
+			trace(turbine1Rotation,turbine2Rotation,turbine3Rotation,turbine4Rotation,turbine5Rotation);
+			
+		}
+		public function destroyLevel2():void
+		{
+			removeChild(level2Player);
+			level2Player=null;
+			
+			removeChild(street);
+			street=null;
+			
+			if (level2ObjectArray.length!=0)
+			{
+				for(var ww:int=0;ww<level2ObjectArray.length;ww++)
+				{
+					removeChild(level2ObjectArray[ww]);
+					level2ObjectArray[ww]=null;
+					level2ObjectArray.splice(ww,1);
+					ww--;
+				}//end for
+			}//end if
+			for(var www:int=0;www<level2BackgroundArray.length;www++)
+			{
+				removeChild(level2BackgroundArray[www]);
+				level2BackgroundArray[www]=null;
+				level2BackgroundArray.splice(www,1);
+				www--;
+			}//end for
+			for(var wwww:int=0;wwww<streetDividersArrayLeft.length;wwww++)
+			{
+				removeChild(streetDividersArrayLeft[wwww]);
+				removeChild(streetDividersArrayRight[wwww]);
+				streetDividersArrayLeft[wwww]=null;
+				streetDividersArrayRight[wwww]=null;
+				streetDividersArrayLeft.splice(wwww,1);
+				streetDividersArrayRight.splice(wwww,1);
+				wwww--;
+			}//end for 
+			stage.removeEventListener(KeyboardEvent.KEY_DOWN,keyDown);
+			stage.removeEventListener(KeyboardEvent.KEY_UP,keyUp);
+		}//end destroy level two 
+		public function destroyLevel3():void
+		{
+			pSelectArray[3].visible=false;
+			pSelectArray[4].visible=false;
+			
+			for(var ii:int=0;ii<level3ObjectArray.length;ii++)
+			{
+				removeChild(level3ObjectArray[ii]);
+				level3ObjectArray[ii]=null;	
+				level3ObjectArray.splice(ii,1);
+				ii--;
+			}//end for 
+			for(var no:int=0;no<level3BackgroundArray.length;no++)
+			{
+				removeChild(level3BackgroundArray[no]);
+				level3BackgroundArray[no]=null;
+				level3BackgroundArray.splice(no,1);
+				no--;
+			}//end for 
+			for (var fgf:int=0;fgf<boulderTrackerArray.length;fgf++)
+			{
+				boulderTrackerArray.splice(fgf,1);
+				fgf--;
+			}//for 
+			for (var ttyl:int=0;ttyl<movementArray.length;ttyl++)
+			{
+				movementArray.splice(ttyl,1);
+				ttyl--;
+			}//for
+			if (youLose==true)
+			{
+				gotoAndStop(6);
+				btnRestart=new Restart();
+				btnRestart.x=268;
+				btnRestart.y=330;
+				addChild(btnRestart);
+				btnRestart.addEventListener(MouseEvent.CLICK,restartLevel);
+				myLevel=3.5;
+			}//end if 
+			else if (youLose==false)
+			{
+				gotoAndStop(13);
+				btnContinue=new Continue();
+				btnContinue.x=461.5;//location of continue button
+				btnContinue.y=46.8;
+				addChild(btnContinue);
+				myLevel=3.7;
+			}//end else if 
+		}//end destroy level 3 
+		public function destroyLevel4():void
+		{
+			removeChild(dial);
+			for (var ttt:int=0;ttt<markArray.length;ttt++)
+			{
+				removeChild(markArray[ttt]);
+				markArray[ttt]=null;
+				markArray.splice(ttt,1);
+			}//end for
+			for (var gah:int=0;gah<livesArray.length;gah++)
+			{
+				removeChild(livesArray[gah]);
+				livesArray[gah]=null;
+				livesArray.splice(gah,1);
+				gah--;
+			}//end for
+			if (youWin)
+			{
+				myLevel=4.7;
+				gotoAndStop(16);
+				btnContinue=new Continue();
+				btnContinue.x=461.5;
+				btnContinue.y=46.8;
+				addChild(btnContinue);
+				pSelectArray2Placement();
+				addChild(pSelectArray[2]);
+				pSelectArray[2].visible=true;
+				btnContinue.addEventListener(MouseEvent.CLICK, instructionsContinue5);
+			}
+			else 
+			{
+				myLevel=4.5;
+				gotoAndStop(6);
+				btnRestart=new Restart();
+				btnRestart.x=268;
+				btnRestart.y=330;
+				addChild(btnRestart);
+				btnRestart.addEventListener(MouseEvent.CLICK,restartLevel);
+			}
+		}//end destroylevel4
+		
+	}//end public class
+}//end program
